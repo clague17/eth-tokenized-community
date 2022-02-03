@@ -1,8 +1,8 @@
 export type StateType = {
   provider?: any;
   web3Provider?: any;
-  address?: string | null;
-  chainId?: number | null;
+  address?: string;
+  chainId?: number;
 };
 
 export type ActionType =

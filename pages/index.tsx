@@ -43,8 +43,8 @@ if (typeof window !== "undefined") {
 const initialState: StateType = {
   provider: null,
   web3Provider: null,
-  address: null,
-  chainId: null,
+  address: undefined,
+  chainId: undefined,
 };
 
 function reducer(state: StateType, action: ActionType): StateType {
@@ -103,9 +103,9 @@ const Home: NextPage = () => {
     });
   };
 
-  const disconnect = async () => {
-    web3Modal.clearCachedProvider();
+  const disconnect = useCallback(async () => {
     console.log("What's going on here?", provider);
+    web3Modal.clearCachedProvider();
     if (provider?.disconnect && typeof provider.disconnect === "function") {
       console.log("Are we supopsed to be here?");
       await provider.disconnect();
@@ -113,13 +113,13 @@ const Home: NextPage = () => {
     dispatch({
       type: "RESET_WEB3_PROVIDER",
     });
-  };
-  // auto connect to the cached provider
-  useEffect(() => {
-    if (web3Modal.cachedProvider) {
-      connect();
-    }
-  }, [connect]);
+  }, [provider]);
+  // // auto connect to the cached provider
+  // useEffect(() => {
+  //   if (web3Modal.cachedProvider) {
+  //     connect();
+  //   }
+  // }, [connect]);
 
   useEffect(() => {
     if (provider?.on) {
@@ -183,19 +183,17 @@ const Home: NextPage = () => {
                 <span className="p-4">
                   <Text variant="large">Buyer</Text>
                 </span>
-                <div className="m-auto">
-                  {address && (
-                    <div className="grid">
-                      <div>
-                        <p className="mb-1">Network:</p>
-                        <p>{chainData?.name}</p>
-                      </div>
-                      <div>
-                        <p className="mb-1">Address:</p>
-                        <p>{ellipseAddress(address)}</p>
-                      </div>
+                {address && (
+                  <div className="grid px-4">
+                    <div>
+                      <p>{chainData?.name}</p>
                     </div>
-                  )}{" "}
+                    <div>
+                      <p>{ellipseAddress(address)}</p>
+                    </div>
+                  </div>
+                )}
+                <div className="m-auto">
                   {web3Provider ? (
                     <Button onClick={disconnect}>Disconnect Wallet</Button>
                   ) : (
