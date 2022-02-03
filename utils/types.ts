@@ -30,6 +30,7 @@ export interface NFTMembership {
   title: string;
   description: string;
   price: number;
+  tags?: Array<string>;
 }
 
 export interface IAssetData {

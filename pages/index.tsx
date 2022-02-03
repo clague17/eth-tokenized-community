@@ -4,7 +4,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import twitterLogo from "../public/twitter-logo.svg";
-import { Heading, Card, Text, Button } from "degen";
+import { Heading, Card, Text, Button, Tag } from "degen";
 import Web3Modal from "web3modal";
 import { ethers, providers } from "ethers";
 import { NFTMembership, ActionType, StateType } from "../utils/types";
@@ -22,12 +22,14 @@ const subscriptions: Array<NFTMembership> = [
     title: "Luis",
     description: "This is an NFT membership!",
     price: 20,
+    tags: ["HOT", "100 $ECHO"],
   },
   {
     image: "https://picsum.photos/200", // random img endpoint
     title: "Clague",
     description: "This is an NFT membership! 2",
     price: 20,
+    tags: ["NEW", "HOT"],
   },
 ];
 
@@ -207,13 +209,25 @@ const Home: NextPage = () => {
         <div className="w-[40%] m-auto">
           <div id="main-content" className="relative w-full py-5">
             <Card padding="6" shadow>
-              <Heading>Check out these other subscriptions</Heading>
+              <Heading>NFT Subscriptions</Heading>
               <Text>Sign in with your wallet to make your own!</Text>
               {subscriptions.map((sus, idx) => (
-                <div className="m-6">
-                  <Card hover padding="6">
-                    <Heading>{sus.title}</Heading>
+                <div key={idx} className="m-6">
+                  <Card hover padding="2">
+                    <img src={sus.image} className="rounded-xl m-auto" />
+                    <div className="pt-2">
+                      <Heading>{sus.title}</Heading>
+                    </div>
                     <Text>{sus.description}</Text>
+                    {sus.tags && (
+                      <div className="flex">
+                        {sus.tags?.map((tag, idx) => (
+                          <Tag key={idx} hover>
+                            {tag}
+                          </Tag>
+                        ))}
+                      </div>
+                    )}
                   </Card>
                 </div>
               ))}
